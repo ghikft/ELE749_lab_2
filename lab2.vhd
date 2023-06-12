@@ -61,26 +61,26 @@ begin
 	port map(
 		clk_clk => clock_50,
 		--reset_reset
-		ps2_external_CLK => PS2_CLK,
-		ps2_external_DAT => PS2_DAT,
-		sdram_clk_clk => DRAM_CLK,
-		sdram_wires_addr => DRAM_ADDR,
-		sdram_wires_ba => DRAM_BA,
-		sdram_wires_cas_n => DRAM_CAS_N,
-		sdram_wires_cke => DRAM_CKE,
-		sdram_wires_cs_n => DRAM_CS_N,
-		sdram_wires_dq(15 downto 0) => DRAM_DQ, --pas un 64 bit de large
-		--sdram_wires_dqm Pas certain de ce qu'il faut assign la dedans
-		sdram_wires_ras_n => DRAM_RAS_N,
-		sdram_wires_we_n => DRAM_WE_N,
-		vga_controller_external_CLK => VGA_CLK,
-		vga_controller_external_HS => VGA_HS,
-		vga_controller_external_VS => VGA_VS,
+		ps2_external_CLK 					=> PS2_CLK,
+		ps2_external_DAT 					=> PS2_DAT,
+		sdram_clk_clk 						=> DRAM_CLK,
+		sdram_wires_addr 					=> DRAM_ADDR,
+		sdram_wires_ba 					=> DRAM_BA,
+		sdram_wires_cas_n 				=> DRAM_CAS_N,
+		sdram_wires_cke 					=> DRAM_CKE,
+		sdram_wires_cs_n 					=> DRAM_CS_N,
+		sdram_wires_dq(15 downto 0) 	=> DRAM_DQ, --	pas un 64 bit de large
+		--sdram_wires_dqm 									Pas certain de ce qu'il faut assign la dedans
+		sdram_wires_ras_n 				=> DRAM_RAS_N,
+		sdram_wires_we_n 					=> DRAM_WE_N,
+		vga_controller_external_CLK 	=> VGA_CLK,
+		vga_controller_external_HS 	=> VGA_HS,
+		vga_controller_external_VS 	=> VGA_VS,
 		vga_controller_external_BLANK => VGA_BLANK_N,
-		vga_controller_external_SYNC => VGA_SYNC_N,
-		vga_controller_external_R => vga_r,
-		vga_controller_external_G => vga_g,
-		vga_controller_external_B => vga_b
+		vga_controller_external_SYNC 	=> VGA_SYNC_N,
+		vga_controller_external_R 		=> vga_r,
+		vga_controller_external_G 		=> vga_g,
+		vga_controller_external_B 		=> vga_b
 	);
 end structural
 		
