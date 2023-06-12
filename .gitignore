@@ -76,3 +76,21 @@ incremental_db/compiled_partitions/
 incremental_db/README
 
 output_files/
+
+.metadata/
+
+RemoteSystemsTempFiles/
+
+software/lab2/.cproject
+
+software/lab2/.project
+
+software/lab2/.settings/
+
+software/lab2/create-this-app
+
+software/lab2/Makefile
+
+software/lab2/readme.txt
+
+software/lab2_bsp/
