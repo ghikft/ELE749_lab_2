@@ -42,8 +42,8 @@ architecture structural of lab2 is
 			sdram_wires_cas_n             : out   std_logic;                                        --                        .cas_n
 			sdram_wires_cke               : out   std_logic;                                        --                        .cke
 			sdram_wires_cs_n              : out   std_logic;                                        --                        .cs_n
-			sdram_wires_dq                : inout std_logic_vector(63 downto 0) := (others => '0'); --                        .dq
-			sdram_wires_dqm               : out   std_logic_vector(7 downto 0) := (others => '0');                     --                        .dqm
+			sdram_wires_dq                : inout std_logic_vector(15 downto 0) := (others => '0'); --                        .dq
+			sdram_wires_dqm               : out   std_logic_vector(1 downto 0);                     --                        .dqm
 			sdram_wires_ras_n             : out   std_logic;                                        --                        .ras_n
 			sdram_wires_we_n              : out   std_logic;                                        --                        .we_n
 			vga_controller_external_CLK   : out   std_logic;                                        -- vga_controller_external.CLK
@@ -70,7 +70,7 @@ begin
 		sdram_wires_cas_n 				=> DRAM_CAS_N,
 		sdram_wires_cke 					=> DRAM_CKE,
 		sdram_wires_cs_n 					=> DRAM_CS_N,
-		sdram_wires_dq(15 downto 0) 	=> DRAM_DQ, --	pas un 64 bit de large
+		sdram_wires_dq					 	=> DRAM_DQ, --	pas un 64 bit de large
 		sdram_wires_dqm(0)				=> DRAM_LDQM, --Pas certain de ce qu'il faut assign la dedans
 		sdram_wires_dqm(1)				=> DRAM_UDQM,
 		sdram_wires_ras_n 				=> DRAM_RAS_N,
