@@ -68,3 +68,11 @@ de1_soc.qsf
 lab2.qsf.bak
 
 lab2.vhd.bak
+
+c5_pin_model_dump.txt
+
+incremental_db/compiled_partitions/
+
+incremental_db/README
+
+output_files/

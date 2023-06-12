@@ -29,7 +29,7 @@
    {
       datum baseAddress
       {
-         value = "134742016";
+         value = "134479872";
          type = "String";
       }
    }
@@ -37,7 +37,7 @@
    {
       datum baseAddress
       {
-         value = "134754328";
+         value = "134492216";
          type = "String";
       }
    }
@@ -61,7 +61,7 @@
    {
       datum baseAddress
       {
-         value = "134752256";
+         value = "134490112";
          type = "String";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum baseAddress
       {
-         value = "134754352";
+         value = "134492208";
          type = "String";
       }
    }
@@ -101,7 +101,7 @@
    {
       datum baseAddress
       {
-         value = "134479872";
+         value = "134217728";
          type = "String";
       }
    }
@@ -117,7 +117,7 @@
    {
       datum baseAddress
       {
-         value = "134754304";
+         value = "134492176";
          type = "String";
       }
    }
@@ -133,7 +133,7 @@
    {
       datum baseAddress
       {
-         value = "134754344";
+         value = "134492200";
          type = "String";
       }
    }
@@ -189,7 +189,7 @@
    {
       datum baseAddress
       {
-         value = "134754336";
+         value = "134492192";
          type = "String";
       }
    }
@@ -291,7 +291,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' /><slave name='onchip_mem.s1' start='0x8040000' end='0x8080000' /><slave name='character_buffer_with_dma.avalon_char_buffer_slave' start='0x8080000' end='0x8082000' /><slave name='cpu.jtag_debug_module' start='0x8082800' end='0x8083000' /><slave name='pixel_buffer_dma_0.avalon_control_slave' start='0x8083000' end='0x8083010' /><slave name='character_buffer_with_dma.avalon_char_control_slave' start='0x8083018' end='0x8083020' /><slave name='sysid.control_slave' start='0x8083020' end='0x8083028' /><slave name='ps2_0.avalon_ps2_slave' start='0x8083028' end='0x8083030' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8083030' end='0x8083038' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' /><slave name='onchip_mem.s1' start='0x8000000' end='0x8040000' /><slave name='character_buffer_with_dma.avalon_char_buffer_slave' start='0x8040000' end='0x8042000' /><slave name='cpu.jtag_debug_module' start='0x8042800' end='0x8043000' /><slave name='pixel_buffer_dma_0.avalon_control_slave' start='0x8043010' end='0x8043020' /><slave name='sysid.control_slave' start='0x8043020' end='0x8043028' /><slave name='ps2_0.avalon_ps2_slave' start='0x8043028' end='0x8043030' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8043030' end='0x8043038' /><slave name='character_buffer_with_dma.avalon_char_control_slave' start='0x8043038' end='0x8043040' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -318,7 +318,7 @@
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="28" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' /><slave name='cpu.jtag_debug_module' start='0x8082800' end='0x8083000' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' /><slave name='cpu.jtag_debug_module' start='0x8042800' end='0x8043000' /></address-map>]]></parameter>
   <parameter name="internalIrqMaskSystemInfo" value="3" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
@@ -600,7 +600,7 @@
    start="pixel_buffer_dma_0.avalon_pixel_dma_master"
    end="onchip_mem.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08040000" />
+  <parameter name="baseAddress" value="0x08000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -609,7 +609,7 @@
    start="cpu.data_master"
    end="character_buffer_with_dma.avalon_char_buffer_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08080000" />
+  <parameter name="baseAddress" value="0x08040000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -618,7 +618,7 @@
    start="cpu.data_master"
    end="character_buffer_with_dma.avalon_char_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08083018" />
+  <parameter name="baseAddress" value="0x08043038" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -627,7 +627,7 @@
    start="cpu.data_master"
    end="pixel_buffer_dma_0.avalon_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08083000" />
+  <parameter name="baseAddress" value="0x08043010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -636,7 +636,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08083030" />
+  <parameter name="baseAddress" value="0x08043030" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -645,7 +645,7 @@
    start="cpu.data_master"
    end="ps2_0.avalon_ps2_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08083028" />
+  <parameter name="baseAddress" value="0x08043028" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -654,7 +654,7 @@
    start="cpu.data_master"
    end="sysid.control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08083020" />
+  <parameter name="baseAddress" value="0x08043020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -663,7 +663,7 @@
    start="cpu.data_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08082800" />
+  <parameter name="baseAddress" value="0x08042800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="sdram.s1">
@@ -677,7 +677,7 @@
    start="cpu.data_master"
    end="onchip_mem.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08040000" />
+  <parameter name="baseAddress" value="0x08000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -686,7 +686,7 @@
    start="cpu.instruction_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08082800" />
+  <parameter name="baseAddress" value="0x08042800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
