@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+.qsys_edit/
+
+db/
+
+lab2.qpf
+
+lab2.qsf
+
+lab2Arc.sopcinfo
+
+lab2Arc/
