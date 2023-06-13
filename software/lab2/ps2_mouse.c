@@ -2,7 +2,7 @@
 *Description
 * Librairie pour controler la souris par le port PS/2
 *********************************************************************
-*Auteurs : Michal Solecki, Patrick Salois, utilisé avec permission
+*Auteurs : Michal Solecki, Patrick Salois, utilisï¿½ avec permission
 *Creation date : 2014-07-07
 *Last Modified : 2014-07-14
 *********************************************************************/
@@ -108,7 +108,7 @@ static void ps2_isr (void *context, alt_u32 id) {
 }
 
 void ps2_init(void) {
-	ps2 = alt_up_ps2_open_dev(PS2_NAME);		//Connexion au module PS/2
+	ps2 = alt_up_ps2_open_dev(PS2_0_NAME);		//Connexion au module PS/2
 
 	// On initialise les variables dans le contexte
 	message_q.read_addr = 0;	//addresse de lecture dans le buffer circulaire
@@ -127,7 +127,7 @@ void ps2_init(void) {
 							(void *) (&ps2_context),
 							0x0 );
 	#else
-	alt_irq_register(PS2_IRQ, (void *) (&ps2_context), ps2_isr);
+	alt_irq_register(PS2_0_IRQ, (void *) (&ps2_context), ps2_isr);
 	#endif
 
 	alt_up_ps2_enable_read_interrupt(ps2); //On active les interruptions

@@ -94,3 +94,5 @@ software/lab2/Makefile
 software/lab2/readme.txt
 
 software/lab2_bsp/
+
+software/lab2/lab2.objdump

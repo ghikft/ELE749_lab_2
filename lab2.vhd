@@ -30,6 +30,8 @@ end lab2;
 
 architecture structural of lab2 is
 
+	signal reset_n : std_logic;
+
 	component lab2Arc is
 		port(
 			clk_clk                       : in    std_logic                     := '0';             --                     clk.clk
@@ -58,10 +60,11 @@ architecture structural of lab2 is
 	end component;
 	
 begin
+	reset_n <= not key(3);
 	nios_system : lab2arc
 	port map(
 		clk_clk 								=> clock_50,
-		reset_reset 						=> key(3),
+		reset_reset 						=> reset_n,
 		ps2_external_CLK 					=> PS2_CLK,
 		ps2_external_DAT 					=> PS2_DAT,
 		sdram_clk_clk 						=> DRAM_CLK,

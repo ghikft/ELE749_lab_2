@@ -31,15 +31,31 @@ int main(void)
 
 
 	/* CHAR BUFFER setup and static display */
+	alt_up_char_buffer_dev *char_buffer;
+	alt_up_char_buffer_init(char_buffer);
+
 
 	/* PIXEL BUFFER setup and background display */
+	alt_up_pixel_buffer_dma_dev *pixel_buffer;
+	pixel_buffer=alt_up_pixel_buffer_dma_open_dev(PIXEL_BUFFER_DMA_0_NAME);
+	if(!pixel_buffer){
+		//printf("error on creation \n\r");
+		alt_putstr("error on creation \n\r");
+	}else{
+		//printf("buffer created\n\r");
+		alt_putstr("buffer created\n\r");
+	}
+	
+	//alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
 
 
 	ps2_init(); 		// from ps2_mouse.h
-	printf("init complete\n");
+	//printf("init complete\n");
+	alt_putstr("Init complete\n\r");
 
 	/* main loop */
 	while (1) {
+		alt_up_pixel_buffer_dma_draw_rectangle(pixel_buffer, 0,0,100,100,128,0);
 		// process ps2 events during vertical blank
 		if (!alt_up_pixel_buffer_dma_check_swap_buffers_status(pixel_buffer)) {
 
@@ -47,6 +63,7 @@ int main(void)
 			if (ps2_process(&left_btn, &right_btn, &x_mov, &y_mov)) {
 				x_pos += x_mov;
 				y_pos -= y_mov;
+				//printf("X: %d Y: %d\n\r",x_pos,y_pos);
 			}
 
             /* Manage cursor */
