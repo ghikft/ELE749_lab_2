@@ -1,9 +1,3 @@
-/*
- * ps2_moise.h
- *
- *  Created on: Jun 12, 2023
- *      Author: ghikf
- */
 
 #ifndef PS2_MOUSE_H_
 #define PS2_MOUSE_H_
@@ -76,7 +70,7 @@ void ps2_init(void);
 * y_mov :		pointeur contenant le deplacement sur l'axe des y
 *
 *Valeur de retour
-* 1 si une trame a été saisie, 0 sinon
+* 1 si une trame a ï¿½tï¿½ saisie, 0 sinon
 *
 *Notes
 * Aucune

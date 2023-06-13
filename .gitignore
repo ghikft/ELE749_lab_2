@@ -98,3 +98,7 @@ software/lab2_bsp/
 software/lab2/lab2.objdump
 
 lab2.qws
+
+software/lab2/.force_relink
+
+software/lab2/obj/default/.force_relink
