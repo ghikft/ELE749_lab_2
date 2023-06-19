@@ -64,7 +64,7 @@ int main(void)
 
 	/* main loop */
 	while (1) {
-		
+
 		// process ps2 events during vertical blank
 		if (!alt_up_pixel_buffer_dma_check_swap_buffers_status(pixel_buffer)) {
 
@@ -72,6 +72,7 @@ int main(void)
 			if (ps2_process(&left_btn, &right_btn, &x_mov, &y_mov)) {
 				x_pos += x_mov;
 				y_pos -= y_mov;
+                //printf("NiosDraw 1.42.69 - NicolasGagnier - Robin Galipeau");
 				printf("X: %d Y: %d\n\r",x_pos,y_pos);
 			}
 
@@ -82,8 +83,10 @@ int main(void)
 
 
 			// send new position to char buff
-			sprintf(pos_msg, "X:%3d Y:%3d", x_pos, y_pos);
+			sprintf(pos_msg, "NiosDraw 1.42.69 - NicolasGagnier - Robin Galipeau");
 			alt_up_char_buffer_string(char_buffer, pos_msg, 0,5);
+            sprintf(pos_msg, "X:%3d Y:%3d", x_pos, y_pos);
+            alt_up_char_buffer_string(char_buffer, pos_msg, 200,200);
 
 			// vertical refresh
 			alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
