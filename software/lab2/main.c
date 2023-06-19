@@ -18,10 +18,11 @@
 #include "ps2_mouse.h"
 
 //Screen border limts
-#define TOP_LIMIT 0
-#define LEFT_LIMIT 0
-#define RIGHT_LIMIT 310
-#define BOTTOM_LIMIT 210
+#define TOP_LIMIT 10
+#define LEFT_LIMIT 10
+#define RIGHT_LIMIT 320
+#define BOTTOM_LIMIT 240
+#define SCALE_FACTOR 10
 typedef struct Cursor{
 	int x;
 	int y;
@@ -36,11 +37,13 @@ int main(void)
 	unsigned char right_btn = 0;
 	int x_mov = 0;
 	int y_mov = 0;
-	int x_pos = 0;
-	int y_pos = 0;
+	int x_pos = 10;
+	int y_pos = 10;
 	char pos_msg[12];
 
 	Cursor currentCursor;
+	currentCursor.x = 10;
+	currentCursor.y = 10;
 	Cursor oldCursor;
 
 	/* CHAR BUFFER setup and static display */
@@ -52,6 +55,8 @@ int main(void)
 		printf("char buff ok\n\r");
 	}
 	alt_up_char_buffer_init(char_buffer);
+	sprintf(pos_msg, "NiosDraw 1.42.69 - Nicolas Gagnier - Robin Galipeau");
+	alt_up_char_buffer_string(char_buffer, pos_msg, 0,0);
 
 	/* PIXEL BUFFER setup and background display */
 	alt_up_pixel_buffer_dma_dev *pixel_buffer;
@@ -69,7 +74,7 @@ int main(void)
 
 	/* main loop */
 	while (1) {
-
+		
 		// process ps2 events during vertical blank
 		if (!alt_up_pixel_buffer_dma_check_swap_buffers_status(pixel_buffer)) {
 
@@ -78,26 +83,46 @@ int main(void)
 				x_pos += x_mov;
 				y_pos -= y_mov;
                 //printf("NiosDraw 1.42.69 - NicolasGagnier - Robin Galipeau");
-				printf("X: %d Y: %d\n\r",x_pos,y_pos);
+				//printf("X: %d Y: %d\n\r",x_pos,y_pos);
 			}
 
             /* Manage cursor */
-			cursorX = x_pos/10
-			cursorY = y_pos/10
+			//erase old cursor
+			//alt_up_pixel_buffer_dma_draw_box(pixel_buffer, currentCursor.x,currentCursor.y,1,1,0xEB,0);
+			if(!left_btn){
+				alt_up_pixel_buffer_dma_draw(pixel_buffer,0xEB,currentCursor.x,currentCursor.y);
+			}
 
+			//Draw new cursor
+			if (x_pos > RIGHT_LIMIT*SCALE_FACTOR){
+				currentCursor.x = RIGHT_LIMIT;
+			}else if (x_pos < TOP_LIMIT){
+				currentCursor.x = TOP_LIMIT;
+			}else{
+				currentCursor.x = x_pos/10;
+			}
+			
+			if(y_pos> BOTTOM_LIMIT*SCALE_FACTOR){
+				currentCursor.y = BOTTOM_LIMIT;
+			}else if(y_pos < LEFT_LIMIT){
+				currentCursor.y = LEFT_LIMIT;
+			}else{
+				currentCursor.y = y_pos/SCALE_FACTOR;
+			}
+			//printf("X: %d Y: %d\n\r",currentCursor.x,currentCursor.y);
+			alt_up_pixel_buffer_dma_draw(pixel_buffer,0xFF,currentCursor.x,currentCursor.y);
 
 			/* process clicks */
 			if (left_btn){
-				
+				alt_up_pixel_buffer_dma_draw(pixel_buffer,0x00,currentCursor.x,currentCursor.y);
 			}else if(right_btn){
-
+				alt_up_pixel_buffer_dma_draw(pixel_buffer,0xEB,currentCursor.x,currentCursor.y);
 			}
 
 			// send new position to char buff
-			sprintf(pos_msg, "NiosDraw 1.42.69 - NicolasGagnier - Robin Galipeau");
-			alt_up_char_buffer_string(char_buffer, pos_msg, 0,5);
-            sprintf(pos_msg, "X:%3d Y:%3d", x_pos, y_pos);
-            alt_up_char_buffer_string(char_buffer, pos_msg, 200,200);
+			
+            sprintf(pos_msg, "X:%d Y:%d", currentCursor.x, currentCursor.y);
+            alt_up_char_buffer_string(char_buffer, pos_msg, 60,59);
 
 			// vertical refresh
 			alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
