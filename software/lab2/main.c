@@ -17,6 +17,11 @@
 /* Mouse driver */
 #include "ps2_mouse.h"
 
+//Screen border limts
+#define TOP_LIMIT 0
+#define LEFT_LIMIT 0
+#define RIGHT_LIMIT 310
+#define BOTTOM_LIMIT 210
 
 int main(void)
 {
