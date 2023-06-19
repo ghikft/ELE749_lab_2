@@ -73,8 +73,8 @@ begin
 		sdram_wires_cas_n 				=> DRAM_CAS_N,
 		sdram_wires_cke 					=> DRAM_CKE,
 		sdram_wires_cs_n 					=> DRAM_CS_N,
-		sdram_wires_dq					 	=> DRAM_DQ, --	pas un 64 bit de large
-		sdram_wires_dqm(0)				=> DRAM_LDQM, --Pas certain de ce qu'il faut assign la dedans
+		sdram_wires_dq					 	=> DRAM_DQ, 
+		sdram_wires_dqm(0)				=> DRAM_LDQM, 
 		sdram_wires_dqm(1)				=> DRAM_UDQM,
 		sdram_wires_ras_n 				=> DRAM_RAS_N,
 		sdram_wires_we_n 					=> DRAM_WE_N,

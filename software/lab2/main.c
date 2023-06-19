@@ -22,6 +22,10 @@
 #define LEFT_LIMIT 0
 #define RIGHT_LIMIT 310
 #define BOTTOM_LIMIT 210
+typedef struct Cursor{
+	int x;
+	int y;
+} Cursor;
 
 int main(void)
 {
@@ -36,6 +40,8 @@ int main(void)
 	int y_pos = 0;
 	char pos_msg[12];
 
+	Cursor currentCursor;
+	Cursor oldCursor;
 
 	/* CHAR BUFFER setup and static display */
 	alt_up_char_buffer_dev *char_buffer;
@@ -47,22 +53,16 @@ int main(void)
 	}
 	alt_up_char_buffer_init(char_buffer);
 
-
 	/* PIXEL BUFFER setup and background display */
 	alt_up_pixel_buffer_dma_dev *pixel_buffer;
 	pixel_buffer=alt_up_pixel_buffer_dma_open_dev(PIXEL_BUFFER_DMA_0_NAME);
 	if(pixel_buffer == NULL){
-	//if(1){
-		//printf("error on creation \n\r");
 		alt_putstr("pixel buff is dead \n\r");
 	}else{
-		//printf("buffer created\n\r");
 		alt_putstr("pixel buff ok\n\r");
 	}
-	//alt_up_pixel_buffer_dma_clear_screen(pixel_buffer,0);
-	//usleep(1000000);
-	//alt_up_pixel_buffer_dma_draw_rectangle(pixel_buffer, 0,0,100,100,128,0);
-	//alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
+	alt_up_pixel_buffer_dma_clear_screen(pixel_buffer,0);
+	alt_up_pixel_buffer_dma_draw_box(pixel_buffer, 0,0,320,240,0xEB,0);
 
 	ps2_init(); 		// from ps2_mouse.h
 	printf("init complete\n");
@@ -82,10 +82,16 @@ int main(void)
 			}
 
             /* Manage cursor */
+			cursorX = x_pos/10
+			cursorY = y_pos/10
 
 
 			/* process clicks */
+			if (left_btn){
+				
+			}else if(right_btn){
 
+			}
 
 			// send new position to char buff
 			sprintf(pos_msg, "NiosDraw 1.42.69 - NicolasGagnier - Robin Galipeau");
@@ -100,6 +106,3 @@ int main(void)
 
 	return 0;
 }
-
-
-

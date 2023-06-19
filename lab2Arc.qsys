@@ -478,11 +478,11 @@
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="addr_mode" value="X-Y" />
-  <parameter name="back_start_address" value="0" />
+  <parameter name="back_start_address" value="134217728" />
   <parameter name="color_space" value="8-bit RGB" />
   <parameter name="image_height" value="240" />
   <parameter name="image_width" value="320" />
-  <parameter name="start_address" value="0" />
+  <parameter name="start_address" value="134217728" />
  </module>
  <module name="ps2_0" kind="altera_up_avalon_ps2" version="18.0" enabled="1">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
@@ -741,12 +741,12 @@
    kind="clock"
    version="18.1"
    start="clocks.sys_clk"
-   end="pixel_buffer_dma_0.clk" />
+   end="character_buffer_with_dma.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clocks.sys_clk"
-   end="character_buffer_with_dma.clk" />
+   end="pixel_buffer_dma_0.clk" />
  <connection
    kind="clock"
    version="18.1"
