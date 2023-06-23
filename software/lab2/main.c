@@ -23,6 +23,8 @@
 #define RIGHT_LIMIT 320
 #define BOTTOM_LIMIT 240
 #define SCALE_FACTOR 10
+
+#define BACKGROUD_COLOR 128//0xEB
 typedef struct Cursor{
 	int x;
 	int y;
@@ -44,7 +46,6 @@ int main(void)
 	Cursor currentCursor;
 	currentCursor.x = 10;
 	currentCursor.y = 10;
-	Cursor oldCursor;
 
 	/* CHAR BUFFER setup and static display */
 	alt_up_char_buffer_dev *char_buffer;
@@ -67,7 +68,7 @@ int main(void)
 		alt_putstr("pixel buff ok\n\r");
 	}
 	alt_up_pixel_buffer_dma_clear_screen(pixel_buffer,0);
-	alt_up_pixel_buffer_dma_draw_box(pixel_buffer, 0,0,320,240,0xEB,0);
+	alt_up_pixel_buffer_dma_draw_box(pixel_buffer, 0,0,320,240,BACKGROUD_COLOR,0);
 
 	ps2_init(); 		// from ps2_mouse.h
 	printf("init complete\n");
@@ -88,9 +89,9 @@ int main(void)
 
             /* Manage cursor */
 			//erase old cursor
-			//alt_up_pixel_buffer_dma_draw_box(pixel_buffer, currentCursor.x,currentCursor.y,1,1,0xEB,0);
+			//alt_up_pixel_buffer_dma_draw_box(pixel_buffer, currentCursor.x,currentCursor.y,1,1,BACKGROUD_COLOR,0);
 			if(!left_btn){
-				alt_up_pixel_buffer_dma_draw(pixel_buffer,0xEB,currentCursor.x,currentCursor.y);
+				alt_up_pixel_buffer_dma_draw(pixel_buffer,BACKGROUD_COLOR,currentCursor.x,currentCursor.y);
 			}
 
 			//Draw new cursor
@@ -116,13 +117,13 @@ int main(void)
 			if (left_btn){
 				alt_up_pixel_buffer_dma_draw(pixel_buffer,0x00,currentCursor.x,currentCursor.y);
 			}else if(right_btn){
-				alt_up_pixel_buffer_dma_draw(pixel_buffer,0xEB,currentCursor.x,currentCursor.y);
+				alt_up_pixel_buffer_dma_draw_box(pixel_buffer, 0,0,320,240,BACKGROUD_COLOR,0);
 			}
 
 			// send new position to char buff
 			
-            sprintf(pos_msg, "X:%d Y:%d", currentCursor.x, currentCursor.y);
-            alt_up_char_buffer_string(char_buffer, pos_msg, 60,59);
+            //sprintf(pos_msg, "X:%d Y:%d", currentCursor.x, currentCursor.y);
+            //alt_up_char_buffer_string(char_buffer, pos_msg, 60,59);
 
 			// vertical refresh
 			alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
