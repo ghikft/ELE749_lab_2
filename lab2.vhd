@@ -1,3 +1,25 @@
+-------------------------------------------------------------------------------
+--lab2.vhd
+--
+--	created on 2023-05-05
+--
+--	Autor: Robin Galipeau, Nicolas Gagnier
+--
+--	Description:
+--		Material implementation of a VGA video output and a PS2 mouse port
+--		used to support a simple drawing aplication on a NIOS II cpu core.
+--		
+--		module used:	-Onchip memory						--Nios2 core
+--							-SDRAM	controller				--JTAG controller
+--							-pixel and carachter buffer	--PS2 contoller
+--							-RGB resample						--sysID
+--							-Scaler								--IO port for push button
+--							-Alpha Blender
+--							-FIFO
+--							-VGA controller
+--							video PLL
+--					 
+-------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -34,39 +56,66 @@ architecture structural of lab2 is
 
 	component lab2Arc is
 		port(
-			clk_clk                       : in    std_logic                     := '0';             --                     clk.clk
-			ps2_external_CLK              : inout std_logic                     := '0';             --            ps2_external.CLK
-			ps2_external_DAT              : inout std_logic                     := '0';             --                        .DAT
-			reset_reset                   : in    std_logic                     := '0';             --                   reset.reset
-			sdram_clk_clk                 : out   std_logic;                                        --               sdram_clk.clk
-			sdram_wires_addr              : out   std_logic_vector(12 downto 0);                    --             sdram_wires.addr
-			sdram_wires_ba                : out   std_logic_vector(1 downto 0);                     --                        .ba
-			sdram_wires_cas_n             : out   std_logic;                                        --                        .cas_n
-			sdram_wires_cke               : out   std_logic;                                        --                        .cke
-			sdram_wires_cs_n              : out   std_logic;                                        --                        .cs_n
-			sdram_wires_dq                : inout std_logic_vector(15 downto 0) := (others => '0'); --                        .dq
-			sdram_wires_dqm               : out   std_logic_vector(1 downto 0);                     --                        .dqm
-			sdram_wires_ras_n             : out   std_logic;                                        --                        .ras_n
-			sdram_wires_we_n              : out   std_logic;                                        --                        .we_n
-			vga_controller_external_CLK   : out   std_logic;                                        -- vga_controller_external.CLK
-			vga_controller_external_HS    : out   std_logic;                                        --                        .HS
-			vga_controller_external_VS    : out   std_logic;                                        --                        .VS
-			vga_controller_external_BLANK : out   std_logic;                                        --                        .BLANK
-			vga_controller_external_SYNC  : out   std_logic;                                        --                        .SYNC
-			vga_controller_external_R     : out   std_logic_vector(7 downto 0);                     --                        .R
-			vga_controller_external_G     : out   std_logic_vector(7 downto 0);                     --                        .G
-			vga_controller_external_B     : out   std_logic_vector(7 downto 0)                      --                        .B
+			-- clk.clk		
+			clk_clk                       : in    std_logic	:= '0';
+			-- ps2_external.CLK			
+			ps2_external_CLK              : inout std_logic := '0';
+			-- .DAT			
+			ps2_external_DAT              : inout std_logic := '0';
+			-- reset.reset			
+			reset_reset                   : in    std_logic := '0';             
+			-- sdram_clk.clk
+			sdram_clk_clk                 : out   std_logic;     
+			-- sdram_wires.addr
+			sdram_wires_addr              : out   std_logic_vector(12 downto 0);
+			-- .ba
+			sdram_wires_ba                : out   std_logic_vector(1 downto 0);
+			-- .cas_n
+			sdram_wires_cas_n             : out   std_logic;
+			-- .cke
+			sdram_wires_cke               : out   std_logic;
+			-- .cs_n
+			sdram_wires_cs_n              : out   std_logic; 
+			-- .dq
+			sdram_wires_dq                : inout std_logic_vector(15 downto 0) 
+														:= (others => '0');
+			-- .dqm
+			sdram_wires_dqm               : out   std_logic_vector(1 downto 0);      
+			-- .ras_n
+			sdram_wires_ras_n             : out   std_logic;     
+			-- .we_n
+			sdram_wires_we_n              : out   std_logic;      
+			-- vga_controller_external.CLK
+			vga_controller_external_CLK   : out   std_logic;
+			-- .HS
+			vga_controller_external_HS    : out   std_logic;  
+			-- .VS
+			vga_controller_external_VS    : out   std_logic;    
+			-- .BLANK
+			vga_controller_external_BLANK : out   std_logic;    
+			-- .SYNC
+			vga_controller_external_SYNC  : out   std_logic;   
+			-- .R
+			vga_controller_external_R     : out   std_logic_vector(7 downto 0);     
+			-- .G
+			vga_controller_external_G     : out   std_logic_vector(7 downto 0); 
+			-- .B
+			vga_controller_external_B     : out   std_logic_vector(7 downto 0)                      
 		);
 	end component;
 	
 begin
-	reset_n <= not key(3);
+	reset_n <= not key(3); --invert the cpu reset signal from KEY(3)
+	
+	
 	nios_system : lab2arc
 	port map(
 		clk_clk 								=> clock_50,
 		reset_reset 						=> reset_n,
+		--connection to PS2 port
 		ps2_external_CLK 					=> PS2_CLK,
 		ps2_external_DAT 					=> PS2_DAT,
+		--connections to SDRAM chip
 		sdram_clk_clk 						=> DRAM_CLK,
 		sdram_wires_addr 					=> DRAM_ADDR,
 		sdram_wires_ba 					=> DRAM_BA,
@@ -78,6 +127,7 @@ begin
 		sdram_wires_dqm(1)				=> DRAM_UDQM,
 		sdram_wires_ras_n 				=> DRAM_RAS_N,
 		sdram_wires_we_n 					=> DRAM_WE_N,
+		--Connection to VGA port
 		vga_controller_external_CLK 	=> VGA_CLK,
 		vga_controller_external_HS 	=> VGA_HS,
 		vga_controller_external_VS 	=> VGA_VS,
