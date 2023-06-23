@@ -19,16 +19,27 @@
 
 //Screen border limts
 #define TOP_LIMIT 10
-#define LEFT_LIMIT 10
-#define RIGHT_LIMIT 320
-#define BOTTOM_LIMIT 240
+#define LEFT_LIMIT 0
+#define RIGHT_LIMIT 319
+#define BOTTOM_LIMIT 239
 #define SCALE_FACTOR 10
 
 #define BACKGROUD_COLOR 128//0xEB
+#define DRAW_COLOR 0
+#define CURSOR_COLOR 0xFF
+
 typedef struct Cursor{
 	int x;
 	int y;
 } Cursor;
+
+unsigned char get_pixel_color(int x, int y){
+	unsigned char *pixel;
+	unsigned char color;
+	pixel = (unsigned char *)ONCHIP_MEM_BASE+(y<<9)+x;
+	color = *pixel;
+	return color;
+}
 
 int main(void)
 {
@@ -41,7 +52,9 @@ int main(void)
 	int y_mov = 0;
 	int x_pos = 10;
 	int y_pos = 10;
-	char pos_msg[12];
+	char pos_msg[18];
+	int lastRight = 0;
+	int lastLeft = 0;
 
 	Cursor currentCursor;
 	currentCursor.x = 10;
@@ -57,7 +70,7 @@ int main(void)
 	}
 	alt_up_char_buffer_init(char_buffer);
 	sprintf(pos_msg, "NiosDraw 1.42.69 - Nicolas Gagnier - Robin Galipeau");
-	alt_up_char_buffer_string(char_buffer, pos_msg, 0,0);
+	alt_up_char_buffer_string(char_buffer, pos_msg, 0,1);
 
 	/* PIXEL BUFFER setup and background display */
 	alt_up_pixel_buffer_dma_dev *pixel_buffer;
@@ -72,7 +85,7 @@ int main(void)
 
 	ps2_init(); 		// from ps2_mouse.h
 	printf("init complete\n");
-
+	int lastColor = 0;
 	/* main loop */
 	while (1) {
 		
@@ -90,40 +103,62 @@ int main(void)
             /* Manage cursor */
 			//erase old cursor
 			//alt_up_pixel_buffer_dma_draw_box(pixel_buffer, currentCursor.x,currentCursor.y,1,1,BACKGROUD_COLOR,0);
-			if(!left_btn){
-				alt_up_pixel_buffer_dma_draw(pixel_buffer,BACKGROUD_COLOR,currentCursor.x,currentCursor.y);
-			}
+			
+			alt_up_pixel_buffer_dma_draw(pixel_buffer,lastColor,currentCursor.x,currentCursor.y);
+			
 
 			//Draw new cursor
 			if (x_pos > RIGHT_LIMIT*SCALE_FACTOR){
 				currentCursor.x = RIGHT_LIMIT;
-			}else if (x_pos < TOP_LIMIT){
-				currentCursor.x = TOP_LIMIT;
+				x_pos = RIGHT_LIMIT*SCALE_FACTOR;
+			}else if (x_pos < LEFT_LIMIT*SCALE_FACTOR){
+				currentCursor.x = LEFT_LIMIT;
+				x_pos = LEFT_LIMIT*SCALE_FACTOR;
 			}else{
 				currentCursor.x = x_pos/10;
 			}
 			
 			if(y_pos> BOTTOM_LIMIT*SCALE_FACTOR){
 				currentCursor.y = BOTTOM_LIMIT;
-			}else if(y_pos < LEFT_LIMIT){
-				currentCursor.y = LEFT_LIMIT;
+				y_pos = BOTTOM_LIMIT*SCALE_FACTOR;
+			}else if(y_pos < TOP_LIMIT*SCALE_FACTOR){
+				currentCursor.y = TOP_LIMIT;
+				y_pos = TOP_LIMIT*SCALE_FACTOR;
 			}else{
 				currentCursor.y = y_pos/SCALE_FACTOR;
 			}
+			lastColor = get_pixel_color(currentCursor.x, currentCursor.y);
 			//printf("X: %d Y: %d\n\r",currentCursor.x,currentCursor.y);
-			alt_up_pixel_buffer_dma_draw(pixel_buffer,0xFF,currentCursor.x,currentCursor.y);
+			alt_up_pixel_buffer_dma_draw(pixel_buffer,CURSOR_COLOR,currentCursor.x,currentCursor.y);
 
 			/* process clicks */
 			if (left_btn){
-				alt_up_pixel_buffer_dma_draw(pixel_buffer,0x00,currentCursor.x,currentCursor.y);
+				alt_up_pixel_buffer_dma_draw(pixel_buffer,DRAW_COLOR,currentCursor.x,currentCursor.y);
+				lastColor = DRAW_COLOR;
+				if(!lastLeft){
+					alt_putstr("left clik, DRAWING\n\r");
+				}
+				lastLeft = 1;
 			}else if(right_btn){
 				alt_up_pixel_buffer_dma_draw_box(pixel_buffer, 0,0,320,240,BACKGROUD_COLOR,0);
+				if(!lastRight){
+					alt_putstr("right click, CLEAR SCREEN\n\r");
+				}
+				lastRight = 1;
+			}
+			else{
+				if(lastLeft){
+					alt_putstr("left released, STOP DRAWING\n\r");
+				}
+				lastLeft = 0;
+				lastRight = 0;
 			}
 
 			// send new position to char buff
 			
-            //sprintf(pos_msg, "X:%d Y:%d", currentCursor.x, currentCursor.y);
-            //alt_up_char_buffer_string(char_buffer, pos_msg, 60,59);
+            sprintf(pos_msg, "X:%d Y:%d  ", currentCursor.x, currentCursor.y);
+            alt_up_char_buffer_string(char_buffer, pos_msg, 60,59);
+
 
 			// vertical refresh
 			alt_up_pixel_buffer_dma_swap_buffers(pixel_buffer);
